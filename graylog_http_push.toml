@@ -1,0 +1,62 @@
+# This is a TOML document.
+
+# payload_host should be : Customer-software-typeoflog 
+
+# payload_level is an int : 
+# 0 Emergency	emerg (panic)	Système inutilisable.
+# 1 Alert	alert Une intervention immédiate est nécessaire.
+# 2 Critical	crit  Erreur critique pour le système.
+# 3 Error	err (error)  Erreur de fonctionnement.
+# 4 Warning	warn (warning)	    Avertissement (une erreur peut intervenir si aucune action n'est prise).
+# 5 Notice	notice		    Événement normal méritant d'être signalé.
+# 6 Informational	info		    Pour information.
+# 7 Debugging	debug		    Message de mise au point.
+
+# watcher_type should be "event" or "loop"
+# loop sert a lire toutes les 60 secondes le contenu du repertoire de log et a renvoyer les logs presents a graylog.
+# event utilise les notifications système pour signaler un evenement dans le repertoire de log, par exemple la creation d'un fichier. Un json est créé et si le serveur graylog n'est pas joignable il est stocké dans une base locale boltdb
+
+title = "TOML graylog agent config file"
+
+[owner]
+name = "fredix"
+organization = "fredix"
+dob = 2016-06-12T12:00:00Z
+
+[boltdb]
+  dbfile="/home/sysadmin/graylogpush_bolt.db"	
+
+[graylog]
+  url = "graylog.exemple.com"
+  format = "gelf"
+  protocol = "http"
+  port = 443
+
+[watchers]
+  [watchers.test]
+  watcher_type = "event"
+  name = "Watch test1"
+  directory_log = "/tmp/test1"
+  ext_file = ".push"
+  directory_archive = "/tmp/test/archives"
+  payload_host = "project1"
+  payload_level = 7
+
+  [watchers.test2]
+  watcher_type = "event"
+  name = "Watcher test2"
+  directory_log = "/tmp/test2"
+  ext_file = ".push"
+  directory_archive = "/tmp/test2/archives"
+  payload_host = "project2"
+  payload_level = 7
+
+
+ [watchers.test3]
+  watcher_type = "loop"
+  name = "Watcher test3"
+  directory_log = "/tmp/test3"
+  ext_file = ".push"
+  directory_archive = "/tmp/test2/archives"
+  payload_host = "project3"
+  payload_level = 7

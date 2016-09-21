@@ -1,0 +1,21 @@
+export GOPATH=$GOPATH:/home/user/sources/graylog_http_push
+
+cd /home/user/sources/graylog_http_push/src
+
+Linux :
+
+go build -o ../linux/graylog_push  graylog_http_push.go
+
+windows :
+
+32 bits :
+
+GOOS=windows GOARCH=386 go build -o ../win/graylog_http_push_i386.exe graylog_http_push.go
+
+64 bits :
+
+GOOS=windows GOARCH=amd64 go build -o ../win/graylog_http_push_amd64.exe graylog_http_push.go
+
+# create a windows service
+
+sc create graylogpush binpath= "\"C:\Users\user\sources\graylog_http_push\win\graylog_http_push_i386.exe\" \"C:\Users\user\sources\graylog_http_push\win\graylog_http_push.toml\" --service" depend= Tcpip
